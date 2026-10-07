@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<section id="contacts">
+    <h2 class="sec-title">Контакти</h2>
+
+    <div class="row g-4">
+
+        <div class="col-md-5">
+            <div class="info-card p-4 h-100">
+                <p class="fw-semibold mb-3">Де мене знайти</p>
+                <ul class="list-unstyled contact-list">
+                    <li>
+                        <span class="contact-icon">✉</span>
+                        <a href="mailto:liudmyla.yakovyshyn.24@pnu.edu.ua" class="text-break">liudmyla.yakovyshyn.24@pnu.edu.ua</a>
+                    </li>
+                    <li>
+                        <span class="contact-icon">⌥</span>
+                        <a href="https://github.com/liudmyla-yakovyshyn" target="_blank">GitHub</a>
+                    </li>
+                    <li>
+                        <span class="contact-icon">◎</span>
+                        Івано-Франківськ, Україна
+                    </li>
+                </ul>
+                <hr class="my-3">
+                <p class="text-muted small mb-0">
+                    Відкрита до навчальної практики, стажувань
+                    та участі у студентських проєктах.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            <div class="info-card p-4">
+                <p class="fw-semibold mb-3">Надіслати повідомлення</p>
+                <form action="#">
+                    <div class="mb-3">
+                        <label for="name" class="form-label small">Ваше ім'я</label>
+                        <input type="text" class="form-control form-control-sm" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label small">Email</label>
+                        <input type="email" class="form-control form-control-sm" id="email" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label small">Повідомлення</label>
+                        <textarea class="form-control form-control-sm" id="message" name="message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-accent w-100">Надіслати</button>
+                </form>
+                <p class="text-muted small mt-2 mb-0">Форма демонстраційна — відправка не налаштована.</p>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
