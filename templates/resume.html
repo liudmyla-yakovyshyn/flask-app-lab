@@ -1,0 +1,185 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+
+<section id="about" class="mb-5">
+    <div class="row align-items-center g-4">
+        <div class="col-auto">
+            <img src="{{ url_for('static', filename='images/avatar.jpg') }}"
+                 alt="Аватар" class="avatar-img">
+        </div>
+        <div class="col">
+            <h1 class="mb-1">Яковишин Людмила</h1>
+            <p class="text-muted mb-1">
+                Студентка · Інженерія програмного забезпечення · ІПЗ-33<br>
+                <small>Карпатський національний університет імені Василя Стефаника</small>
+            </p>
+            <a href="{{ url_for('contacts') }}" class="btn btn-sm btn-outline-accent mt-2">Написати</a>
+        </div>
+    </div>
+</section>
+
+<hr>
+
+<section id="about-text" class="mb-5">
+    <h2 class="sec-title">Про себе</h2>
+    <p>
+        Навчаюся на третьому курсі за спеціальністю «Інженерія програмного забезпечення».
+        Захоплююся веброзробкою, дизайном інтерфейсів та створенням зручних для
+        користувача рішень. Маю досвід роботи з PHP та Python, вмію верстати адаптивні
+        сторінки за допомогою Bootstrap. Люблю розбиратися в нових технологіях та
+        вчитися на практиці.
+    </p>
+</section>
+
+<hr>
+
+<section id="education" class="mb-5">
+    <h2 class="sec-title">Освіта</h2>
+    <div class="info-card p-3">
+        <div class="d-flex justify-content-between flex-wrap gap-1">
+            <div>
+                <div class="fw-semibold">Карпатський національний університет ім. В. Стефаника</div>
+                <div class="text-muted small">Бакалавр · Інженерія програмного забезпечення · Група ІПЗ-33</div>
+            </div>
+            <span class="tag align-self-start">2024 — 2028</span>
+        </div>
+    </div>
+</section>
+
+<hr>
+
+<section id="skills" class="mb-5">
+    <h2 class="sec-title">Навички</h2>
+    <div class="row g-3">
+        <div class="col-sm-6">
+            <div class="d-flex justify-content-between small mb-1"><span>PHP</span><span class="text-muted">65%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:65%"></div></div>
+        </div>
+        <div class="col-sm-6">
+            <div class="d-flex justify-content-between small mb-1"><span>Python</span><span class="text-muted">60%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:60%"></div></div>
+        </div>
+        <div class="col-sm-6">
+            <div class="d-flex justify-content-between small mb-1"><span>HTML / CSS</span><span class="text-muted">80%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:80%"></div></div>
+        </div>
+        <div class="col-sm-6">
+            <div class="d-flex justify-content-between small mb-1"><span>JavaScript (базовий)</span><span class="text-muted">40%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:40%"></div></div>
+        </div>
+        <div class="col-sm-6">
+            <div class="d-flex justify-content-between small mb-1"><span>Java / JavaFX</span><span class="text-muted">50%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:50%"></div></div>
+        </div>
+        <div class="col-sm-6">
+            <div class="d-flex justify-content-between small mb-1"><span>Git / GitHub</span><span class="text-muted">55%</span></div>
+            <div class="progress"><div class="progress-bar" style="width:55%"></div></div>
+        </div>
+    </div>
+</section>
+
+<hr>
+
+<section id="technologies" class="mb-5">
+    <h2 class="sec-title">Технології</h2>
+    <div class="d-flex flex-wrap gap-2">
+        <span class="tag">PHP</span>
+        <span class="tag">Python</span>
+        <span class="tag">Flask</span>
+        <span class="tag">Java</span>
+        <span class="tag">JavaFX</span>
+        <span class="tag">HTML5</span>
+        <span class="tag">CSS3</span>
+        <span class="tag">Bootstrap 5</span>
+        <span class="tag">JavaScript</span>
+        <span class="tag">Jinja2</span>
+        <span class="tag">MySQL</span>
+        <span class="tag">Git</span>
+        <span class="tag">GitHub</span>
+        <span class="tag">Figma</span>
+        <span class="tag">VS Code</span>
+    </div>
+</section>
+
+<hr>
+
+<section id="projects" class="mb-5">
+    <h2 class="sec-title">Проєкти</h2>
+    <div class="row g-3">
+
+        <div class="col-md-6">
+            <div class="info-card p-3 h-100">
+                <div class="fw-semibold mb-1">Сайт-портфоліо на Flask</div>
+                <p class="text-muted small mb-2">
+                    Персональний вебсайт-портфоліо з двома сторінками — резюме та контакти.
+                    Реалізовано маршрутизацію Flask, наслідування шаблонів Jinja2,
+                    підключення Bootstrap та власних стилів CSS. Розгорнуто на Render.com.
+                </p>
+                <div class="d-flex gap-1 flex-wrap">
+                    <span class="tag">Python</span>
+                    <span class="tag">Flask</span>
+                    <span class="tag">Jinja2</span>
+                    <span class="tag">Bootstrap</span>
+                    <span class="tag">Render.com</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="info-card p-3 h-100">
+                <div class="fw-semibold mb-1">Верстка сайту за макетом Figma</div>
+                <p class="text-muted small mb-2">
+                    Адаптивна верстка багатосекційного сайту за готовим макетом у Figma.
+                    Реалізовано мобільне меню, анімації при скролі, форму зворотного
+                    зв'язку та коректне відображення на всіх розмірах екрану.
+                </p>
+                <div class="d-flex gap-1 flex-wrap">
+                    <span class="tag">HTML5</span>
+                    <span class="tag">CSS3</span>
+                    <span class="tag">JavaScript</span>
+                    <span class="tag">Figma</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="info-card p-3 h-100">
+                <div class="fw-semibold mb-1">БД медичної компанії — MySQL</div>
+                <p class="text-muted small mb-2">
+                    Розробка реляційної бази даних для медичної компанії: таблиці
+                    пацієнтів, лікарів, прийомів та діагнозів. Реалізовано складні
+                    SQL-запити, зв'язки між таблицями та процедури обробки даних.
+                </p>
+                <div class="d-flex gap-1 flex-wrap">
+                    <span class="tag">MySQL</span>
+                    <span class="tag">SQL</span>
+                    <span class="tag">ERD</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="info-card p-3 h-100">
+                <div class="fw-semibold mb-1">Облік фестивалів народної творчості — Java</div>
+                <p class="text-muted small mb-2">
+                    Десктопний застосунок на Java з графічним інтерфейсом JavaFX для
+                    обліку фестивалів народної творчості. Реалізовано сортування за
+                    датою, регіоном та жанром, пошук та фільтрацію записів,
+                    імпорт/експорт даних.
+                </p>
+                <div class="d-flex gap-1 flex-wrap">
+                    <span class="tag">Java</span>
+                    <span class="tag">JavaFX</span>
+                    <span class="tag">OOP</span>
+                    <span class="tag">Collections</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+{% endblock %}
