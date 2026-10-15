@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Товари | Людмила Яковишин{% endblock %}
+
+{% block content %}
+<h2 class="sec-title mb-4">Каталог товарів</h2>
+
+<div class="row g-4">
+    {% for product in products %}
+    <div class="col-md-4">
+        <div class="info-card p-4 h-100 d-flex flex-column justify-content-between">
+            <div>
+                <h4 class="fw-bold text-light mb-2">{{ product.name }}</h4>
+                <div class="mb-3">
+                    <span class="tag fs-6">${{ product.price }}</span>
+                </div>
+                <p class="text-muted small">{{ product.content }}</p>
+            </div>
+            <a href="{{ url_for('products.detail_product', product_id=product.id) }}" class="btn btn-outline-accent btn-sm mt-3">Детальніше</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
