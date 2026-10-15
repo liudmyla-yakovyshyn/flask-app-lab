@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Greeting Page{% endblock %}
+
+{% block content %}
+<div class="row g-4 pt-2">
+    <div class="col-md-3">
+        <div class="info-card p-3 shadow-sm">
+            <h6 class="fw-bold text-light mb-3 border-bottom pb-2" style="border-color: #1e3a2f !important;">
+                Flask App
+            </h6>
+            <nav>
+                <ul class="nav flex-column gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link p-0 text-muted" href="{{ url_for('users.greetings', name='John') }}">
+                            Greet John
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link p-0 text-muted" href="{{ url_for('users.admin') }}">
+                            Admin
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+
+    <div class="col-md-9">
+        <div class="info-card p-4 shadow-sm">
+            <h2 class="display-6 fw-normal mb-3 text-light">Hello :)</h2>
+            <p class="fs-4 mb-2 text-light">
+                User: <strong>{{ name }}</strong>
+            </p>
+
+            {% if age %}
+                <p class="fs-5 mb-0 fw-semibold" style="color: #22c55e;">
+                    Age: {{ age }}
+                </p>
+            {% else %}
+                <p class="fs-5 mb-0 fw-semibold" style="color: #ef4444;">
+                    Age: Not provided
+                </p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
