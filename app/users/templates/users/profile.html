@@ -3,7 +3,50 @@
 {% block title %}Профіль | {{ user }}{% endblock %}
 
 {% block content %}
-<div class="p-3 mb-4 rounded bg-primary text-white d-flex justify-content-between align-items-center">
+{% if theme == 'light' %}
+<style>
+    .profile-theme-light {
+        background-color: #f8fafc !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+    }
+    .profile-theme-light .sec-title {
+        color: #047857 !important;
+    }
+    .profile-theme-light .form-label {
+        color: #334155 !important;
+        font-weight: 600 !important;
+    }
+    .profile-theme-light .form-control {
+        background-color: #ffffff !important;
+        border: 1px solid #94a3b8 !important;
+        color: #0f172a !important;
+    }
+    .profile-theme-light .form-control:focus {
+        background-color: #ffffff !important;
+        border-color: #059669 !important;
+        color: #0f172a !important;
+        box-shadow: 0 0 0 0.2rem rgba(5, 150, 105, 0.25) !important;
+    }
+    .profile-theme-light .form-control::placeholder {
+        color: #94a3b8 !important;
+    }
+    .profile-theme-light hr {
+        border-color: #cbd5e1 !important;
+    }
+    .profile-theme-light .text-muted {
+        color: #64748b !important;
+    }
+    .profile-theme-light code {
+        color: #047857 !important;
+        background-color: #e2e8f0;
+        padding: 0.15rem 0.35rem;
+        border-radius: 4px;
+    }
+</style>
+{% endif %}
+
+<div class="p-3 mb-4 rounded bg-primary text-white d-flex justify-content-between align-items-center shadow-sm">
     <div>
         <h3 class="mb-1">Ласкаво просимо до сторінки {{ user }}!</h3>
         <p class="mb-0 small">Тут ви можете отримати інформацію та вийти з системи.</p>
@@ -13,18 +56,26 @@
     </div>
 </div>
 
-<div class="info-card p-3 mb-4">
+<div class="p-4 rounded mb-4 {% if theme == 'light' %}profile-theme-light shadow-sm{% else %}info-card{% endif %}">
+    <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom {% if theme == 'light' %}border-secondary-subtle{% else %}border-secondary{% endif %}">
+        <span class="fw-semibold">Кольорова схема сторінки:</span>
+        <div class="btn-group btn-group-sm">
+            <a href="{{ url_for('users.set_theme', theme='light') }}" class="btn {% if theme == 'light' %}btn-primary active{% else %}btn-outline-secondary{% endif %}">Світла</a>
+            <a href="{{ url_for('users.set_theme', theme='dark') }}" class="btn {% if theme == 'dark' %}btn-primary active{% else %}btn-outline-secondary{% endif %}">Темна</a>
+        </div>
+    </div>
+
     <div class="row g-4">
         <div class="col-12">
             <h5 class="sec-title">Додати кукі:</h5>
             <form action="{{ url_for('users.add_cookie') }}" method="POST" class="row g-2 align-items-end">
                 <div class="col-md-4">
                     <label class="form-label small">Ключ кукі</label>
-                    <input type="text" name="key" class="form-control form-control-sm" required>
+                    <input type="text" name="key" class="form-control form-control-sm" placeholder="Назва ключа" required>
                 </div>
                 <div class="col-md-4">
                     <label class="form-label small">Значення кукі</label>
-                    <input type="text" name="value" class="form-control form-control-sm" required>
+                    <input type="text" name="value" class="form-control form-control-sm" placeholder="Значення" required>
                 </div>
                 <div class="col-md-2">
                     <label class="form-label small">Термін дії (сек)</label>
@@ -36,14 +87,14 @@
             </form>
         </div>
 
-        <hr class="my-2">
+        <div class="col-12"><hr class="my-1"></div>
 
         <div class="col-md-6">
             <h5 class="sec-title">Видалити кукі за ключем:</h5>
             <form action="{{ url_for('users.delete_cookie') }}" method="POST" class="row g-2 align-items-end">
                 <div class="col-8">
                     <label class="form-label small">Ключ кукі для видалення:</label>
-                    <input type="text" name="key" class="form-control form-control-sm" required>
+                    <input type="text" name="key" class="form-control form-control-sm" placeholder="Ключ" required>
                 </div>
                 <div class="col-4">
                     <button type="submit" class="btn btn-warning btn-sm w-100 text-dark">Видалити кукі за ключем</button>
@@ -61,10 +112,10 @@
     </div>
 </div>
 
-<div class="info-card p-3">
+<div class="p-4 rounded {% if theme == 'light' %}profile-theme-light shadow-sm{% else %}info-card{% endif %}">
     <h5 class="sec-title">Список всіх кукі:</h5>
     <div class="table-responsive">
-        <table class="table table-sm table-striped table-dark mb-0">
+        <table class="table table-sm align-middle {% if theme == 'light' %}table-light table-hover border{% else %}table-striped table-dark{% endif %} mb-0">
             <thead>
                 <tr>
                     <th style="width: 30%;">Ключ</th>
@@ -79,7 +130,7 @@
                 </tr>
                 {% else %}
                 <tr>
-                    <td colspan="2" class="text-center text-muted">Кукі відсутні</td>
+                    <td colspan="2" class="text-center text-muted py-3">Кукі відсутні</td>
                 </tr>
                 {% endfor %}
             </tbody>
