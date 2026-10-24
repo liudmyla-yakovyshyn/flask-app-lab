@@ -45,3 +45,62 @@ def greetings(name):
 def admin():
     to_url = url_for("users.greetings", name="administrator", age=45, _external=True)
     return redirect(to_url)
+
+
+@users_bp.route("/profile")
+def profile():
+    if not session.get("user"):
+        flash("Будь ласка, увійдіть у систему для доступу до профілю.", "error")
+        return redirect(url_for("users.login"))
+
+    return render_template("profile.html", user=session.get("user"), cookies=request.cookies)
+
+
+@users_bp.route("/cookie/add", methods=["POST"])
+def add_cookie():
+    if not session.get("user"):
+        flash("Доступ заборонено.", "error")
+        return redirect(url_for("users.login"))
+
+    key = request.form.get("key", "").strip()
+    value = request.form.get("value", "").strip()
+    max_age = request.form.get("max_age", type=int)
+
+    if not key:
+        flash("Ключ кукі не може бути порожнім.", "warning")
+        return redirect(url_for("users.profile"))
+
+    response = make_response(redirect(url_for("users.profile")))
+    response.set_cookie(key, value, max_age=max_age if max_age and max_age > 0 else None)
+    flash(f"Кукі '{key}' успішно додано!", "success")
+    return response
+
+
+@users_bp.route("/cookie/delete", methods=["POST"])
+def delete_cookie():
+    if not session.get("user"):
+        flash("Доступ заборонено.", "error")
+        return redirect(url_for("users.login"))
+
+    key = request.form.get("key", "").strip()
+    if not key:
+        flash("Вкажіть ключ для видалення.", "warning")
+        return redirect(url_for("users.profile"))
+
+    response = make_response(redirect(url_for("users.profile")))
+    response.delete_cookie(key)
+    flash(f"Кукі '{key}' успішно видалено!", "info")
+    return response
+
+
+@users_bp.route("/cookie/delete_all", methods=["POST"])
+def delete_all_cookies():
+    if not session.get("user"):
+        flash("Доступ заборонено.", "error")
+        return redirect(url_for("users.login"))
+
+    response = make_response(redirect(url_for("users.profile")))
+    for key in request.cookies:
+        response.delete_cookie(key)
+    flash("Усі кукі успішно видалено!", "info")
+    return response
