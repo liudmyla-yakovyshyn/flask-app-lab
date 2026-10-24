@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}Вхід | Людмила Яковишин{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="info-card p-4">
+            <h2 class="text-center mb-4">Login</h2>
+            <form method="POST" action="{{ url_for('users.login') }}">
+                <div class="mb-3">
+                    <label for="username" class="form-label small">User name</label>
+                    <input type="text" class="form-control form-control-sm" id="username" name="username" required>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label small">Password</label>
+                    <input type="password" class="form-control form-control-sm" id="password" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-accent w-100">Sign In</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
