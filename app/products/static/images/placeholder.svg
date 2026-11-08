@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#2a2d34"/>
+  <path d="M160 170 L190 130 L220 170 L240 145 L270 185 L130 185 Z" fill="#4a4e59"/>
+  <circle cx="160" cy="115" r="16" fill="#4a4e59"/>
+  <text x="200" y="225" font-family="sans-serif" font-size="14" fill="#888e9b" text-anchor="middle">Зображення відсутнє</text>
+</svg>
+

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% from 'macros/form.html' import render_field %}
+
+{% block title %}Редагувати: {{ product.name }} | Товари{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="info-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h4 fw-bold text-light mb-0">Редагування товару</h2>
+                <a href="{{ url_for('products.detail_product', product_id=product.id) }}" class="btn btn-outline-secondary btn-sm">Назад</a>
+            </div>
+
+            {% if product.image %}
+            <div class="mb-3">
+                <label class="form-label small text-muted">Поточне зображення:</label>
+                <div style="max-width: 200px; height: 120px; background-color: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08);" class="rounded overflow-hidden p-1">
+                    <img src="{{ url_for('products.static', filename=product.image) }}" alt="{{ product.name }}" class="w-100 h-100 object-fit-contain">
+                </div>
+            </div>
+            {% endif %}
+
+            <form method="POST" action="{{ url_for('products.edit_product', product_id=product.id) }}" enctype="multipart/form-data" novalidate>
+                {{ form.hidden_tag() }}
+                {{ render_field(form.name) }}
+                {{ render_field(form.category) }}
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ render_field(form.price, step="0.01") }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ render_field(form.quantity, min="0") }}
+                    </div>
+                </div>
+                {{ render_field(form.content) }}
+                {{ render_field(form.image) }}
+                <p class="text-muted small mt-1 mb-3">Залиште поле зображення порожнім, якщо не бажаєте змінювати поточне фото.</p>
+                <div class="d-flex gap-2">
+                    {{ form.submit(class="btn btn-accent flex-grow-1") }}
+                    <a href="{{ url_for('products.detail_product', product_id=product.id) }}" class="btn btn-outline-secondary">Скасувати</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

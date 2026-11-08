@@ -3,20 +3,47 @@
 {% block title %}Товари | Людмила Яковишин{% endblock %}
 
 {% block content %}
-<h2 class="sec-title mb-4">Каталог товарів</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="sec-title mb-0">Каталог товарів</h2>
+    <a href="{{ url_for('products.add_product') }}" class="btn btn-accent btn-sm">+ Додати товар</a>
+</div>
 
 <div class="row g-4">
     {% for product in products %}
     <div class="col-md-4">
-        <div class="info-card p-4 h-100 d-flex flex-column justify-content-between">
+        <div class="info-card p-3 h-100 d-flex flex-column justify-content-between">
             <div>
-                <h4 class="fw-bold text-light mb-2">{{ product.name }}</h4>
-                <div class="mb-3">
-                    <span class="tag fs-6">${{ product.price }}</span>
+                <div class="ratio ratio-16x9 mb-3 rounded overflow-hidden" style="background-color: rgba(255, 255, 255, 0.02); border: 1px solid rgba(255, 255, 255, 0.08);">
+                    {% if product.image %}
+                        <img src="{{ url_for('products.static', filename=product.image) }}" alt="{{ product.name }}" class="w-100 h-100 object-fit-contain p-1">
+                    {% else %}
+                        <img src="{{ url_for('products.static', filename='images/placeholder.svg') }}" alt="Placeholder" class="w-100 h-100 object-fit-contain p-1">
+                    {% endif %}
                 </div>
-                <p class="text-muted small">{{ product.content }}</p>
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h4 class="fw-bold text-light mb-0 fs-5">{{ product.name }}</h4>
+                    <span class="tag fs-6">${{ "%.2f"|format(product.price) }}</span>
+                </div>
+                <div class="mb-2">
+                    <span class="badge bg-secondary-subtle text-secondary border border-secondary small">{{ product.category }}</span>
+                    <span class="badge bg-dark text-muted border small ms-1">В наявності: {{ product.quantity }} шт.</span>
+                </div>
+                <p class="text-muted small mb-2 text-truncate">{{ product.content }}</p>
+                {% if product.created_at %}
+                    <p class="text-muted small mb-0" style="font-size: 0.75rem;">Додано: {{ product.created_at }}</p>
+                {% endif %}
             </div>
-            <a href="{{ url_for('products.detail_product', product_id=product.id) }}" class="btn btn-outline-accent btn-sm mt-3">Детальніше</a>
+            <div class="d-flex gap-2 mt-3 pt-2 border-top border-secondary border-opacity-25">
+                <a href="{{ url_for('products.detail_product', product_id=product.id) }}" class="btn btn-outline-accent btn-sm flex-grow-1">Детальніше</a>
+                <a href="{{ url_for('products.edit_product', product_id=product.id) }}" class="btn btn-outline-secondary btn-sm">Редагувати</a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+        <div class="info-card p-4 text-center">
+            <p class="text-muted mb-3">У каталозі поки немає жодного товару.</p>
+            <a href="{{ url_for('products.add_product') }}" class="btn btn-accent btn-sm">Додати перший товар</a>
         </div>
     </div>
     {% endfor %}
