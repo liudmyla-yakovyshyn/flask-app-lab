@@ -16,6 +16,17 @@ class Post(db.Model):
         nullable=False,
     )
 
+    is_active: Mapped[bool] = mapped_column(
+        db.Boolean,
+        default=True,
+        nullable=False,
+    )
+    author: Mapped[str] = mapped_column(
+        db.String(20),
+        default="Anonymous",
+        nullable=False,
+    )
+
     def __repr__(self) -> str:
         return f"<Post {self.id}: {self.title}>"
 
