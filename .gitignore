@@ -4,3 +4,7 @@ __pycache__/
 skills/
 *.log
 app/logs/
+instance/
+*.sqlite
+*.db
+app/products/static/uploads/

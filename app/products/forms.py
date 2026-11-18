@@ -9,7 +9,7 @@ class ProductForm(FlaskForm):
         'Назва товару',
         validators=[
             DataRequired(message="Вкажіть назву товару."),
-            Length(min=3, message="Мінімум 3 символи")
+            Length(min=3, message="Назва повинна містити щонайменше 3 символи.")
         ]
     )
     content = TextAreaField(
@@ -31,11 +31,10 @@ class ProductForm(FlaskForm):
         'Категорія',
         choices=[
             ('', 'Оберіть категорію...'),
-            ('computers', 'Комп’ютери'),
-            ('electronics', 'Електроніка'),
-            ('peripherals', 'Периферія'),
             ('laptops', 'Ноутбуки'),
             ('phones', 'Смартфони'),
+            ('pc', 'Комп’ютери'),
+            ('gadgets', 'Гаджети'),
             ('accessories', 'Аксесуари')
         ],
         validators=[

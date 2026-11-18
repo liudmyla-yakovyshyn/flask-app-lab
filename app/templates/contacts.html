@@ -38,7 +38,7 @@
         <div class="col-md-7">
             <div class="info-card p-4">
                 <p class="fw-semibold mb-3">Надіслати повідомлення</p>
-                <form method="POST" action="{{ url_for('contacts') }}" novalidate>
+                <form method="POST" action="{{ url_for('main.contacts') }}" novalidate>
                     {{ form.hidden_tag() }}
                     {{ render_field(form.name, placeholder="Введіть ім'я (4-10 символів)") }}
                     {{ render_field(form.email, placeholder="name@example.com") }}

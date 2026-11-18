@@ -87,7 +87,7 @@ class ProductBlueprintTestCase(unittest.TestCase):
         }
         response = self.client.post("/products/add", data=bad_payload, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
-        self.assertIn("Мінімум 3 символи".encode("utf-8"), response.data)
+        self.assertIn("щонайменше 3 символи".encode("utf-8"), response.data)
 
     def test_edit_product_success(self):
         edit_payload = {
