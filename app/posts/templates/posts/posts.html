@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Пости{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('posts.static', filename='css/posts.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="sec-title mb-0">Публікації та новини</h1>
+    <a href="{{ url_for('posts.create_post') }}" class="btn btn-accent btn-sm">+ Додати пост</a>
+</div>
+
+{% if posts %}
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for post in posts %}
+    <div class="col">
+        <article class="post-card">
+            <div class="post-card-img-wrap">
+                <img src="{{ url_for('posts.static', filename='img/default.jpg') }}" alt="{{ post.title }}" class="post-card-img">
+            </div>
+            <div class="post-card-body">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="post-badge">{{ post.category }}</span>
+                    <span class="post-meta">{{ post.posted.strftime('%d.%m.%Y %H:%M') }}</span>
+                </div>
+                <h2 class="h5 fw-bold text-light mb-2">{{ post.title }}</h2>
+                <p class="post-excerpt mb-3">
+                    {{ post.content[:100] }}{% if post.content|length > 100 %}...{% endif %}
+                </p>
+                <div class="d-flex justify-content-between align-items-center pt-2 border-top border-secondary border-opacity-25">
+                    <span class="post-meta">Автор: {{ post.author }}</span>
+                    <a href="{{ url_for('posts.detail_post', id=post.id) }}" class="btn btn-outline-accent btn-sm">Переглянути</a>
+                </div>
+            </div>
+        </article>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="info-card p-5 text-center">
+    <p class="text-muted mb-3">Поки що немає жодного опублікованого поста.</p>
+    <a href="{{ url_for('posts.create_post') }}" class="btn btn-accent btn-sm">Створити перший пост</a>
+</div>
+{% endif %}
+{% endblock %}
+

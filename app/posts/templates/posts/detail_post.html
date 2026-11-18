@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{{ url_for('posts.static', filename='css/posts.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="info-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="post-badge">{{ post.category }}</span>
+                <span class="post-meta">{{ post.posted.strftime('%d.%m.%Y %H:%M') }}</span>
+            </div>
+
+            <h1 class="h3 fw-bold text-light mb-2">{{ post.title }}</h1>
+            <p class="post-meta mb-3">
+                Автор: <strong class="text-light">{{ post.author }}</strong>
+                &middot;
+                Статус: {% if post.is_active %}<span class="text-success">Активний</span>{% else %}<span class="text-warning">Чернетка</span>{% endif %}
+            </p>
+
+            <img src="{{ url_for('posts.static', filename='img/default.jpg') }}" alt="{{ post.title }}" class="post-detail-img mb-4">
+
+            <div class="post-content-full mb-4">{{ post.content }}</div>
+
+            <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
+                <a href="{{ url_for('posts.list_posts') }}" class="btn btn-outline-secondary btn-sm">Назад до списку</a>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('posts.update_post', id=post.id) }}" class="btn btn-outline-accent btn-sm">Редагувати</a>
+                    <a href="{{ url_for('posts.delete_post', id=post.id) }}" class="btn btn-outline-danger btn-sm">Видалити</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
