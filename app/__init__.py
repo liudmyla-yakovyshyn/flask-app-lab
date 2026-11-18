@@ -35,6 +35,7 @@ def create_app(config_name: str = None) -> Flask:
         app.register_blueprint(users_bp)
 
         from .products import products_bp
+        from .products import models as product_models
         app.register_blueprint(products_bp)
 
         from .posts import post_bp
