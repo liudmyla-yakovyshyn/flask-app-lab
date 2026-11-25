@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Акаунт{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <div class="info-card p-4">
+            <h2 class="h3 fw-bold text-light mb-2">Вітаємо, {{ user.username }}!</h2>
+            <p class="text-muted mb-3">Ви успішно авторизувалися у своєму профілі.</p>
+
+            <div class="p-3 rounded mb-4" style="background: rgba(15, 23, 42, 0.6); border: 1px solid #1e293b;">
+                <p class="mb-1 text-light"><strong>ID:</strong> {{ user.id }}</p>
+                <p class="mb-1 text-light"><strong>Ім'я користувача:</strong> {{ user.username }}</p>
+                <p class="mb-0 text-light"><strong>Email:</strong> {{ user.email }}</p>
+            </div>
+
+            <div class="d-flex flex-wrap gap-2">
+                <a href="{{ url_for('users.users_list') }}" class="btn btn-outline-accent btn-sm">Список користувачів</a>
+                <a href="{{ url_for('users.profile') }}" class="btn btn-outline-secondary btn-sm">Налаштування кукі</a>
+                <a href="{{ url_for('users.logout') }}" class="btn btn-outline-danger btn-sm ms-auto">Вийти</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

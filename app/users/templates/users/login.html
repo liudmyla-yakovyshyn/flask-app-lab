@@ -1,23 +1,26 @@
 {% extends 'base.html' %}
+{% from 'macros/form.html' import render_field %}
 
-{% block title %}Вхід | Людмила Яковишин{% endblock %}
+{% block title %}Вхід{% endblock %}
 
 {% block content %}
 <div class="row justify-content-center">
     <div class="col-md-5">
         <div class="info-card p-4">
-            <h2 class="text-center mb-4">Login</h2>
-            <form method="POST" action="{{ url_for('users.login') }}">
-                <div class="mb-3">
-                    <label for="username" class="form-label small">User name</label>
-                    <input type="text" class="form-control form-control-sm" id="username" name="username" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label small">Password</label>
-                    <input type="password" class="form-control form-control-sm" id="password" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-accent w-100">Sign In</button>
+            <h2 class="h4 fw-bold text-light mb-1 text-center">Вхід у систему</h2>
+            <p class="text-muted small text-center mb-4">Введіть ваш email та пароль</p>
+
+            <form method="POST" action="{{ url_for('users.login') }}" novalidate>
+                {{ form.hidden_tag() }}
+                {{ render_field(form.email) }}
+                {{ render_field(form.password) }}
+                {{ render_field(form.remember) }}
+                {{ form.submit(class="btn btn-accent w-100 mt-2") }}
             </form>
+
+            <div class="text-center mt-3 pt-3 border-top border-secondary border-opacity-25">
+                <small class="text-muted">Ще не маєте акаунта? <a href="{{ url_for('users.register') }}" class="text-success text-decoration-none">Зареєструватися</a></small>
+            </div>
         </div>
     </div>
 </div>

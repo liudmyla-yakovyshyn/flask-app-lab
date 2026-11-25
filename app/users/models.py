@@ -1,12 +1,18 @@
 from typing import TYPE_CHECKING
+from flask_login import UserMixin
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app import bcrypt, db
+from app import bcrypt, db, login_manager
 
 if TYPE_CHECKING:
     from app.posts.models import Post
 
 
-class User(db.Model):
+@login_manager.user_loader
+def load_user(user_id):
+    return db.session.get(User, int(user_id))
+
+
+class User(db.Model, UserMixin):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -25,4 +31,7 @@ class User(db.Model):
         self.password = bcrypt.generate_password_hash(raw_password).decode("utf-8")
 
     def check_password(self, raw_password: str) -> bool:
-        return bcrypt.check_password_hash(self.password, raw_password)
+        try:
+            return bcrypt.check_password_hash(self.password, raw_password)
+        except ValueError:
+            return False

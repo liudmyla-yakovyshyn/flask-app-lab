@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Список користувачів{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="info-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2 class="h4 fw-bold text-light mb-0">Список користувачів ({{ users|length }})</h2>
+                <a href="{{ url_for('users.account') }}" class="btn btn-outline-secondary btn-sm">Мій акаунт</a>
+            </div>
+
+            {% if users %}
+            <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Ім'я користувача</th>
+                            <th>Email</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for u in users %}
+                        <tr>
+                            <td>{{ u.id }}</td>
+                            <td class="fw-semibold text-success">{{ u.username }}</td>
+                            <td>{{ u.email }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p class="text-muted mb-0">Користувачів поки що немає.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -14,8 +14,9 @@
                 <li class="nav-item"><a class="nav-link {% if request.endpoint and 'products' in request.endpoint %}active{% endif %}" href="{{ url_for('products.list_products') }}">Товари</a></li>
                 <li class="nav-item"><a class="nav-link {% if request.endpoint and 'posts' in request.endpoint %}active{% endif %}" href="{{ url_for('posts.list_posts') }}">Пости</a></li>
 
-                {% if session.get('user') %}
-                    <li class="nav-item"><a class="nav-link {% if request.endpoint == 'users.profile' %}active{% endif %}" href="{{ url_for('users.profile') }}">Профіль ({{ session.get('user') }})</a></li>
+                {% if current_user.is_authenticated %}
+                    <li class="nav-item"><a class="nav-link {% if request.endpoint == 'users.users_list' %}active{% endif %}" href="{{ url_for('users.users_list') }}">Користувачі</a></li>
+                    <li class="nav-item"><a class="nav-link {% if request.endpoint in ('users.account', 'users.profile') %}active{% endif %}" href="{{ url_for('users.account') }}">Профіль ({{ current_user.username }})</a></li>
                     <li class="nav-item"><a class="btn btn-sm btn-outline-danger ms-lg-2" href="{{ url_for('users.logout') }}">Вийти</a></li>
                 {% else %}
                     <li class="nav-item"><a class="nav-link {% if request.endpoint == 'users.login' %}active{% endif %}" href="{{ url_for('users.login') }}">Вхід</a></li>
