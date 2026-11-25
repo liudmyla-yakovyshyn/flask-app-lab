@@ -1,5 +1,6 @@
 from datetime import datetime
-from flask import flash, redirect, render_template, request, url_for
+from flask import abort, flash, redirect, render_template, request, url_for
+from sqlalchemy.orm import joinedload, selectinload
 from app import db
 from . import post_bp
 from .forms import PostForm
@@ -8,7 +9,12 @@ from .models import Post, Tag
 
 @post_bp.route("/", strict_slashes=False)
 def list_posts():
-    stmt = db.select(Post).where(Post.is_active == True).order_by(Post.posted.desc())
+    stmt = (
+        db.select(Post)
+        .options(joinedload(Post.user), selectinload(Post.tags))
+        .where(Post.is_active == True)
+        .order_by(Post.posted.desc())
+    )
     posts = db.session.scalars(stmt).all()
     return render_template("posts.html", title="Пости", posts=posts)
 
@@ -44,7 +50,14 @@ def create_post():
 
 @post_bp.route("/<int:id>")
 def detail_post(id):
-    post = db.get_or_404(Post, id)
+    stmt = (
+        db.select(Post)
+        .options(joinedload(Post.user), selectinload(Post.tags))
+        .where(Post.id == id)
+    )
+    post = db.session.scalar(stmt)
+    if post is None:
+        abort(404)
     return render_template("detail_post.html", title=post.title, post=post)
 
 
