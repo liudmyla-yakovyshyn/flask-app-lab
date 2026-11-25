@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app import db
+from app import bcrypt, db
 
 if TYPE_CHECKING:
     from app.posts.models import Post
@@ -20,3 +20,9 @@ class User(db.Model):
 
     def __repr__(self) -> str:
         return f"User('{self.username}', '{self.email}')"
+
+    def set_password(self, raw_password: str) -> None:
+        self.password = bcrypt.generate_password_hash(raw_password).decode("utf-8")
+
+    def check_password(self, raw_password: str) -> bool:
+        return bcrypt.check_password_hash(self.password, raw_password)
