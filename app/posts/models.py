@@ -1,6 +1,10 @@
 from datetime import datetime
-from sqlalchemy.orm import Mapped, mapped_column
+from typing import TYPE_CHECKING
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app import db
+
+if TYPE_CHECKING:
+    from app.users.models import User
 
 
 class Post(db.Model):
@@ -15,18 +19,16 @@ class Post(db.Model):
         default="other",
         nullable=False,
     )
-
     is_active: Mapped[bool] = mapped_column(
         db.Boolean,
         default=True,
         nullable=False,
     )
-    author: Mapped[str] = mapped_column(
-        db.String(20),
-        default="Anonymous",
-        nullable=False,
+    user_id: Mapped[int | None] = mapped_column(
+        db.ForeignKey("users.id"),
+        nullable=True,
     )
+    user: Mapped["User | None"] = relationship(back_populates="posts")
 
     def __repr__(self) -> str:
         return f"<Post {self.id}: {self.title}>"
-
