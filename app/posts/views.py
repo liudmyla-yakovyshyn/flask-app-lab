@@ -1,5 +1,5 @@
 from datetime import datetime
-from flask import flash, redirect, render_template, request, session, url_for
+from flask import flash, redirect, render_template, request, url_for
 from app import db
 from . import post_bp
 from .forms import PostForm
@@ -17,7 +17,6 @@ def list_posts():
 def create_post():
     form = PostForm()
     if form.validate_on_submit():
-        author = session.get("user") or "Anonymous"
         posted = form.publish_date.data or datetime.utcnow()
         post = Post(
             title=form.title.data,
@@ -25,7 +24,7 @@ def create_post():
             category=form.category.data,
             is_active=form.is_active.data,
             posted=posted,
-            author=author,
+            user_id=form.author_id.data,
         )
         db.session.add(post)
         db.session.commit()
@@ -49,10 +48,12 @@ def update_post(id):
     form = PostForm(obj=post)
     if request.method == "GET":
         form.publish_date.data = post.posted
+        form.author_id.data = post.user_id
 
     if form.validate_on_submit():
         form.populate_obj(post)
         post.posted = form.publish_date.data or post.posted
+        post.user_id = form.author_id.data
         db.session.commit()
         flash("Пост успішно оновлено!", "success")
         return redirect(url_for("posts.detail_post", id=post.id))

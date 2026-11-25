@@ -3,6 +3,7 @@ import warnings
 from datetime import datetime
 from app import create_app, db
 from app.posts.models import Post
+from app.users.models import User
 
 
 class PostsTestCase(unittest.TestCase):
@@ -19,12 +20,20 @@ class PostsTestCase(unittest.TestCase):
         self.app_context.push()
         db.create_all()
 
+        self.user = User(
+            username="tester",
+            email="tester@example.com",
+            password="secret",
+        )
+        db.session.add(self.user)
+        db.session.commit()
+
         self.sample_post = Post(
             title="Тестова публікація",
             content="Це повний текст тестового поста для перевірки CRUD операцій.",
             category="tech",
             is_active=True,
-            author="Tester",
+            user_id=self.user.id,
             posted=datetime(2026, 11, 18, 12, 0),
         )
         db.session.add(self.sample_post)
@@ -41,6 +50,7 @@ class PostsTestCase(unittest.TestCase):
             content="Цей пост не повинен відображатися у списку.",
             category="other",
             is_active=False,
+            user_id=self.user.id,
         )
         db.session.add(inactive_post)
         db.session.commit()
@@ -54,19 +64,20 @@ class PostsTestCase(unittest.TestCase):
         response = self.client.get(f"/post/{self.sample_post.id}")
         self.assertEqual(response.status_code, 200)
         self.assertIn("Тестова публікація".encode("utf-8"), response.data)
-        self.assertIn("Tester".encode("utf-8"), response.data)
+        self.assertIn("tester".encode("utf-8"), response.data)
 
     def test_post_not_found(self):
         response = self.client.get("/post/99999")
         self.assertEqual(response.status_code, 404)
         self.assertIn("Сторінку не знайдено".encode("utf-8"), response.data)
 
-    def test_create_post_anonymous(self):
+    def test_create_post_with_author(self):
         payload = {
             "title": "Нова новина",
             "content": "Зміст нової публікації у системі.",
             "category": "news",
             "publish_date": "2026-11-18T14:30",
+            "author_id": self.user.id,
             "is_active": "y",
         }
         response = self.client.post("/post/create", data=payload, follow_redirects=True)
@@ -75,31 +86,14 @@ class PostsTestCase(unittest.TestCase):
 
         created = db.session.scalar(db.select(Post).where(Post.title == "Нова новина"))
         self.assertIsNotNone(created)
-        self.assertEqual(created.author, "Anonymous")
-
-    def test_create_post_with_session_user(self):
-        with self.client.session_transaction() as sess:
-            sess["user"] = "liudmyla"
-
-        payload = {
-            "title": "Авторський пост",
-            "content": "Пост від авторизованого користувача.",
-            "category": "publication",
-            "publish_date": "2026-11-18T15:00",
-            "is_active": "y",
-        }
-        response = self.client.post("/post/create", data=payload, follow_redirects=True)
-        self.assertEqual(response.status_code, 200)
-
-        created = db.session.scalar(db.select(Post).where(Post.title == "Авторський пост"))
-        self.assertIsNotNone(created)
-        self.assertEqual(created.author, "liudmyla")
+        self.assertEqual(created.user_id, self.user.id)
 
     def test_create_post_validation_error(self):
         bad_payload = {
             "title": "A",
             "content": "Текст поста",
             "category": "news",
+            "author_id": self.user.id,
         }
         response = self.client.post("/post/create", data=bad_payload, follow_redirects=True)
         self.assertEqual(response.status_code, 200)
@@ -115,6 +109,7 @@ class PostsTestCase(unittest.TestCase):
             "content": "Оновлений зміст поста після редагування.",
             "category": "publication",
             "publish_date": "2026-11-18T16:45",
+            "author_id": self.user.id,
             "is_active": "y",
         }
         post_resp = self.client.post(
@@ -144,4 +139,3 @@ class PostsTestCase(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

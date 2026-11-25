@@ -17,7 +17,7 @@
 
             <h1 class="h3 fw-bold text-light mb-2">{{ post.title }}</h1>
             <p class="post-meta mb-3">
-                Автор: <strong class="text-light">{{ post.author }}</strong>
+                Автор: <strong class="text-light">{{ post.user.username if post.user else 'Anonymous' }}</strong>
                 &middot;
                 Статус: {% if post.is_active %}<span class="text-success">Активний</span>{% else %}<span class="text-warning">Чернетка</span>{% endif %}
             </p>
