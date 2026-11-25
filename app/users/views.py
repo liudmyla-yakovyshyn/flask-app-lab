@@ -1,10 +1,31 @@
 from flask import request, render_template, redirect, url_for, flash, session, make_response
+from app import db
 from . import users_bp
+from .forms import RegistrationForm
+from .models import User
 
 USERS_DB = {
     "user1": "password123",
     "admin": "admin2026"
 }
+
+
+@users_bp.route("/register", methods=["GET", "POST"])
+def register():
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(
+            username=form.username.data,
+            email=form.email.data,
+            password="",
+        )
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash(f"Акаунт для {form.username.data} успішно створено!", "success")
+        return redirect(url_for("users.login"))
+
+    return render_template("register.html", title="Реєстрація", form=form)
 
 
 @users_bp.route("/login", methods=["GET", "POST"])
