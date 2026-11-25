@@ -2,7 +2,7 @@ import unittest
 import warnings
 from datetime import datetime
 from app import create_app, db
-from app.posts.models import Post
+from app.posts.models import Post, Tag
 from app.users.models import User
 
 
@@ -25,7 +25,9 @@ class PostsTestCase(unittest.TestCase):
             email="tester@example.com",
             password="secret",
         )
-        db.session.add(self.user)
+        self.tag1 = Tag(name="Tech")
+        self.tag2 = Tag(name="Python")
+        db.session.add_all([self.user, self.tag1, self.tag2])
         db.session.commit()
 
         self.sample_post = Post(
@@ -34,6 +36,7 @@ class PostsTestCase(unittest.TestCase):
             category="tech",
             is_active=True,
             user_id=self.user.id,
+            tags=[self.tag1],
             posted=datetime(2026, 11, 18, 12, 0),
         )
         db.session.add(self.sample_post)
@@ -78,6 +81,7 @@ class PostsTestCase(unittest.TestCase):
             "category": "news",
             "publish_date": "2026-11-18T14:30",
             "author_id": self.user.id,
+            "tags": [self.tag1.id, self.tag2.id],
             "is_active": "y",
         }
         response = self.client.post("/post/create", data=payload, follow_redirects=True)
@@ -87,6 +91,7 @@ class PostsTestCase(unittest.TestCase):
         created = db.session.scalar(db.select(Post).where(Post.title == "Нова новина"))
         self.assertIsNotNone(created)
         self.assertEqual(created.user_id, self.user.id)
+        self.assertEqual(len(created.tags), 2)
 
     def test_create_post_validation_error(self):
         bad_payload = {

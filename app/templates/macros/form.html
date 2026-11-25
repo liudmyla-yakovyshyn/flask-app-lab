@@ -9,7 +9,7 @@
       {{ field.label(class="form-label small") }}
       {% if field.errors %}
         <div>
-          {{ field(class="form-control form-control-sm is-invalid" if field.type != 'SelectField' else "form-select form-select-sm is-invalid", **kwargs) | safe }}
+          {{ field(class="form-control form-control-sm is-invalid" if field.type not in ('SelectField', 'SelectMultipleField') else "form-select form-select-sm is-invalid", **kwargs) | safe }}
           <ul class="list-group mt-1">
             {% for error in field.errors %}
               <li class="list-group-item list-group-item-danger py-1 px-2 small">{{ error }}</li>
@@ -18,7 +18,7 @@
         </div>
       {% else %}
         <div>
-          {{ field(class="form-control form-control-sm" if field.type != 'SelectField' else "form-select form-select-sm", **kwargs) | safe }}
+          {{ field(class="form-control form-control-sm" if field.type not in ('SelectField', 'SelectMultipleField') else "form-select form-select-sm", **kwargs) | safe }}
         </div>
       {% endif %}
     </div>

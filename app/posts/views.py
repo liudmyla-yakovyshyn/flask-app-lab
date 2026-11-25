@@ -3,7 +3,7 @@ from flask import flash, redirect, render_template, request, url_for
 from app import db
 from . import post_bp
 from .forms import PostForm
-from .models import Post
+from .models import Post, Tag
 
 
 @post_bp.route("/", strict_slashes=False)
@@ -18,6 +18,11 @@ def create_post():
     form = PostForm()
     if form.validate_on_submit():
         posted = form.publish_date.data or datetime.utcnow()
+        selected_tags = (
+            db.session.scalars(db.select(Tag).where(Tag.id.in_(form.tags.data))).all()
+            if form.tags.data
+            else []
+        )
         post = Post(
             title=form.title.data,
             content=form.content.data,
@@ -25,6 +30,7 @@ def create_post():
             is_active=form.is_active.data,
             posted=posted,
             user_id=form.author_id.data,
+            tags=selected_tags,
         )
         db.session.add(post)
         db.session.commit()
@@ -49,11 +55,20 @@ def update_post(id):
     if request.method == "GET":
         form.publish_date.data = post.posted
         form.author_id.data = post.user_id
+        form.tags.data = [t.id for t in post.tags]
 
     if form.validate_on_submit():
-        form.populate_obj(post)
+        post.title = form.title.data
+        post.content = form.content.data
+        post.category = form.category.data
+        post.is_active = form.is_active.data
         post.posted = form.publish_date.data or post.posted
         post.user_id = form.author_id.data
+        post.tags = (
+            db.session.scalars(db.select(Tag).where(Tag.id.in_(form.tags.data))).all()
+            if form.tags.data
+            else []
+        )
         db.session.commit()
         flash("Пост успішно оновлено!", "success")
         return redirect(url_for("posts.detail_post", id=post.id))

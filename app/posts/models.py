@@ -6,6 +6,12 @@ from app import db
 if TYPE_CHECKING:
     from app.users.models import User
 
+post_tags = db.Table(
+    "post_tags",
+    db.Column("post_id", db.Integer, db.ForeignKey("posts.id"), primary_key=True),
+    db.Column("tag_id", db.Integer, db.ForeignKey("tags.id"), primary_key=True),
+)
+
 
 class Post(db.Model):
     __tablename__ = "posts"
@@ -29,6 +35,24 @@ class Post(db.Model):
         nullable=True,
     )
     user: Mapped["User | None"] = relationship(back_populates="posts")
+    tags: Mapped[list["Tag"]] = relationship(
+        secondary=post_tags,
+        back_populates="posts",
+    )
 
     def __repr__(self) -> str:
         return f"<Post {self.id}: {self.title}>"
+
+
+class Tag(db.Model):
+    __tablename__ = "tags"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str] = mapped_column(db.String(64), unique=True, nullable=False)
+    posts: Mapped[list["Post"]] = relationship(
+        secondary=post_tags,
+        back_populates="tags",
+    )
+
+    def __repr__(self) -> str:
+        return f"<Tag {self.name}>"

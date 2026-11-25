@@ -26,6 +26,15 @@
 
             <div class="post-content-full mb-4">{{ post.content }}</div>
 
+            {% if post.tags %}
+            <div class="post-tags mb-4">
+                <span class="post-meta me-2">Теги:</span>
+                {% for tag in post.tags %}
+                    <span class="tag-pill">#{{ tag.name }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+
             <div class="d-flex justify-content-between align-items-center pt-3 border-top border-secondary border-opacity-25">
                 <a href="{{ url_for('posts.list_posts') }}" class="btn btn-outline-secondary btn-sm">Назад до списку</a>
                 <div class="d-flex gap-2">
